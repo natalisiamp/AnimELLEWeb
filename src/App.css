@@ -1,0 +1,165 @@
+.main {
+  text-align: center;
+  display: block;
+
+}
+
+.gameContainer {
+  padding-top: 10%;
+  text-align: center;
+  padding-bottom: 10%;
+  max-height: fit-content;
+  display: block;
+}
+
+.divContainer {
+  display: -webkit-flex;
+  display: flex;
+  padding-left: 10%;
+  padding-right: 10%;
+  padding-bottom: 10%;
+  ;
+}
+
+.instruct-filler {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+
+  background-color: #a9bfd6;
+  border-radius: 15px;
+  margin-right: 10%;
+  text-align: center;
+}
+
+.tito {
+  max-height: 20%;
+  max-width: 90%;
+}
+
+.instruct-actual {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+
+  background-color: #a9bfd6;
+  border-radius: 15px;
+  margin-left: 10%;
+  display: inline;
+
+
+
+
+}
+
+.instructions {
+  text-align: left;
+  padding-left: 7%;
+}
+
+.instruct {
+  padding-top: 0;
+}
+
+
+img {
+  padding-bottom: 0px;
+  margin: auto;
+  max-width: 100%;
+}
+
+.logoContainer {
+  margin: auto;
+  background-color: #a9bfd6;
+  border-radius: 15px;
+  width: 40%;
+  height: 30%;
+
+  padding-top: 20px;
+  padding-bottom: 100px;
+
+  display: block;
+
+
+  -webkit-flex: 2;
+  -ms-flex: 2;
+  flex: 2;
+
+}
+
+.creditDiv {
+  padding-top: 0px;
+  max-width: 100%;
+}
+
+.bottom {
+  padding-top: 150px;
+}
+
+.column {
+  float: left;
+  width: 50%;
+}
+
+.row {
+  text-align: center;
+}
+
+.imgContainer {
+
+  text-align: center;
+  height: 100%;
+  width: 100%;
+
+}
+
+.btn {
+  width: 50%;
+  margin: auto;
+  border-radius: 5px;
+}
+
+/* .keys {
+  float: left;
+} */
+
+.keyContainer {
+  display: flex;
+  align-items: center;
+  margin-left: 10%;
+  margin-right: 10%;
+
+}
+
+.keyContainer p {
+  text-align: left;
+}
+
+
+/* fullscreen button */
+.fsbtn {
+  display: inline-block;
+  padding: 0.3em 1.2em;
+  margin: 0 0.1em 0.1em 0;
+  border: 0.16em solid rgba(255, 255, 255, 0);
+  border-radius: 2em;
+  box-sizing: border-box;
+  text-decoration: none;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+  color: clear;
+  text-shadow: 0 0.04em 0.04em rgba(0, 0, 0, 0.35);
+  text-align: center;
+  transition: all 0.2s;
+}
+
+.fsbtn:hover {
+  border-color: rgba(255, 255, 255, 1);
+}
+
+@media all and (max-width:30em) {
+  .fsbtn {
+    display: block;
+    margin: 0.2em auto;
+  }
+}
