@@ -2,6 +2,8 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Unity, useUnityContext } from 'react-unity-webgl';
 
 import './App.css';
+import React, { useState, useCallback, useEffect } from "react";
+import { Unity, useUnityContext } from "react-unity-webgl";
 
 import logo from './Assets/logo0309.svg';
 import instruct from './Assets/instructions1 (1).png';
@@ -16,13 +18,17 @@ import keys from './Assets/keyboard.png';
 import cursor from './Assets/mouse.svg';
 import space from './Assets/space.svg';
 
-
-
+function sendLogin() {
+  const jwt = localStorage.getItem('jwt');
+  unityContext.send("ContinueButton", "loginAttempt", jwt);
+  }
 
 function App() {
+  const [sessionID, setSessionID] = useState();
+  const [playerScore, setPlayerScore] = useState();
+  //const [playerAccessToken, setPlayerAccessToken] = useState();
 
-
-  const { unityProvider } = useUnityContext({
+  const { unityProvider, addEventListener, removeEventListener } = useUnityContext({
     loaderUrl: "/webgl/Build/animelle0227.loader.js",
     dataUrl: "/webgl/Build/animelle0227.data",
     frameworkUrl: "/webgl/Build/animelle0227.framework.js",
@@ -36,6 +42,50 @@ function App() {
     codeUrl: "/webgl/Build/animelle0227.wasm",
 
   });
+
+  unityContext.on("GameLoaded", () => {
+    //setPlayerAccessToken(localStorage.getItem('jwt'));
+    sendLogin();
+  });
+
+  useEffect(() => {
+    addEventListener("GameLoaded", sendLogin);
+    addEventListener("SetSessionID", setSessionID);
+    addEventListener("SetPlayerScore", setPlayerScore);
+    return () => {
+      removeEventListener("GameLoaded", sendLogin);
+      removeEventListener("SetSessionID", setSessionID);
+      removeEventListener("SetPlayerScore", setPlayerScore);
+    };
+  }, [addEventListener, removeEventListener, sendLogin, setSessionID, setPlayerScore]);
+
+
+
+  useEffect(() => {
+    window.addEventListener('beforeunload', beforeLeave)
+    window.addEventListener('unload', onLeave)
+    return () => {
+      window.removeEventListener('beforeunload', beforeLeave)
+      window.addEventListener('unload', onLeave)
+    }
+  }, [])
+
+  const beforeLeave = e => {
+    unityContext.send("LeavingPage", "LeavePageEvents");
+    e.preventDefault()
+    e.returnValue = ''
+  }
+
+  const onLeave = e => {
+    //send session API here
+    let header = {
+      headers: { 'Authorization': 'Bearer ' + localStorage.getItem('jwt') },
+    }
+    axios.post("http://147.182.221.58:5050/api/endsession", {sessionID: sessionID, playerScore: playerScore}, header)
+    .then(response => {console.log(response)})
+    .catch(er => {console.log(er)})
+  }
+
 
 
   //fullscreen
