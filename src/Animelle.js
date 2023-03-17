@@ -18,20 +18,17 @@ import keys from './Assets/keyboard.png';
 import cursor from './Assets/mouse.svg';
 // import space from './Assets/space.svg';
 
-function sendLogin() {
-  const jwt = localStorage.getItem('jwt');
-  unityContext.send("ContinueButton", "loginAttempt", jwt);
-}
 
 
-function Animelle() {
 
-  const [sessionID, setSessionID] = useState();
-  const [playerScore, setPlayerScore] = useState();
-      //const [playerAccessToken, setPlayerAccessToken] = useState();
+  function Animelle() {
+
+    const [sessionID, setSessionID] = useState();
+    const [playerScore, setPlayerScore] = useState();
+    //const [playerAccessToken, setPlayerAccessToken] = useState();
 
 
-  const { unityProvider, addEventListener, removeEventListener } = useUnityContext({
+  const { unityProvider, addEventListener, removeEventListener, sendMessage  } = useUnityContext({
     loaderUrl: "/webgl/Build/animelle0227.loader.js",
     dataUrl: "/webgl/Build/animelle0227.data",
     frameworkUrl: "/webgl/Build/animelle0227.framework.js",
@@ -46,10 +43,15 @@ function Animelle() {
 
   });
 
-  unityContext.on("GameLoaded", () => {
-    //setPlayerAccessToken(localStorage.getItem('jwt'));
-    sendLogin();
-  });
+  function sendLogin() {
+  const jwt = localStorage.getItem('jwt');
+  sendMessage("ContinueButton", "loginAttempt", jwt);
+}
+
+  // unityContext.on("GameLoaded", () => {
+  //   // setPlayerAccessToken(localStorage.getItem('jwt'));
+  //   sendLogin();
+  // });
 
   useEffect(() => {
     addEventListener("GameLoaded", sendLogin);
@@ -63,7 +65,6 @@ function Animelle() {
   }, [addEventListener, removeEventListener, sendLogin, setSessionID, setPlayerScore]);
 
 
-
   useEffect(() => {
     window.addEventListener('beforeunload', beforeLeave)
     window.addEventListener('unload', onLeave)
@@ -74,7 +75,7 @@ function Animelle() {
   }, [])
 
   const beforeLeave = e => {
-    unityContext.send("LeavingPage", "LeavePageEvents");
+    sendMessage("LeavingPage", "LeavePageEvents");
     e.preventDefault()
     e.returnValue = ''
   }
@@ -84,9 +85,9 @@ function Animelle() {
     let header = {
       headers: { 'Authorization': 'Bearer ' + localStorage.getItem('jwt') },
     }
-    axios.post("http://147.182.221.58:5050/api/endsession", { sessionID: sessionID, playerScore: playerScore }, header)
-      .then(response => { console.log(response) })
-      .catch(er => { console.log(er) })
+    axios.post("http://147.182.221.58:5050/api/endsession", {sessionID: sessionID, playerScore: playerScore}, header)
+    .then(response => {console.log(response)})
+    .catch(er => {console.log(er)})
   }
 
 
